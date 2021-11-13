@@ -54,7 +54,7 @@ resource "aws_s3_bucket_policy" "uploader" {
         ]
         Condition = {
           NotIpAddress = {
-            "aws:SourceIp" = [ for ip in var.source_ip_list : ip ]
+            "aws:SourceIp" = [for ip in var.source_ip_list : ip]
           }
         }
       },
