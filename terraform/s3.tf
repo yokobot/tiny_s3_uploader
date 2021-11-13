@@ -2,6 +2,19 @@ resource "aws_s3_bucket" "uploader" {
   bucket = "${var.environment}-tiny-s3-uploader"
   acl    = "public-read"
 
+  cors_rule {
+    allowed_headers = ["*"]
+    allowed_methods = [
+      "HEAD",
+      "GET",
+      "PUT",
+      "POST",
+      "DELETE"
+    ]
+    allowed_origins = ["*"]
+    expose_headers  = ["ETag"]
+  }
+
   website {
     index_document = "index.html"
     error_document = "error.html"
