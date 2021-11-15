@@ -62,6 +62,20 @@ resource "aws_s3_bucket_policy" "uploader" {
   })
 }
 
+resource "aws_s3_bucket_object" "html" {
+  bucket = aws_s3_bucket.uploader.id
+  key    = "index.html"
+  source = "assets/index.html"
+  etag = filemd5("path/to/file")
+}
+
+resource "aws_s3_bucket_object" "js" {
+  bucket = aws_s3_bucket.uploader.id
+  key    = "tinyS3Uploader.js"
+  source = "assets/tinyS3Uploader.js"
+  etag = filemd5("path/to/file")
+}
+
 # destroy時にenvファイルが残っていてもS3バケットを削除する処理
 #resource "null_resource" "uploader" {
 #  triggers = {
