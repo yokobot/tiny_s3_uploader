@@ -3,12 +3,12 @@ resource "aws_cognito_identity_pool" "js" {
   allow_unauthenticated_identities = true
 
   tags = {
-    Name = "${var.environment}-tiny-s3-uploader-idp"
+    Name = "${var.environment}-idp"
   }
 }
 
 resource "aws_iam_role" "unauthenticated_user" {
-  name = "${var.environment}-tiny-s3-uploader-unauthed-user-role"
+  name = "${var.environment}-unauthed-user-role"
   assume_role_policy = <<POLICY
 {
   "Version": "2012-10-17",
@@ -34,7 +34,7 @@ resource "aws_iam_role" "unauthenticated_user" {
 }
 
 resource "aws_iam_role_policy" "unauthenticated_user" {
-  name = "${var.environment}-tiny-s3-uploader-unauthenticated-policy"
+  name = "${var.environment}-unauthenticated-policy"
   role = aws_iam_role.unauthenticated_user.id
 
   policy = jsonencode({
@@ -64,4 +64,12 @@ resource "aws_iam_role_policy" "unauthenticated_user" {
       }
     ]
   })
+}
+
+resource "aws_cognito_identity_pool_roles_attachment" "js" {
+  identity_pool_id = aws_cognito_identity_pool.js.id
+
+  roles = {
+    "unauthenticated" = aws_iam_role.unauthenticated_user.arn
+  }
 }

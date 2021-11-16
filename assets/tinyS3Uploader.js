@@ -1,6 +1,6 @@
-const docsBucketName = "BUCKET_NAME";
-const bucketRegion = "REGION";
-const IdentityPoolId = "IDENTITY_POOL_ID";
+const docsBucketName = "dev-tiny-s3-uploader-docs";
+const bucketRegion = "ap-northeast-1";
+const IdentityPoolId = "ap-northeast-1:5e9821ce-f4bb-4d9a-a770-8a4bff4ca65e";
 
 AWS.config.update({
   region: bucketRegion,
@@ -25,11 +25,13 @@ function listDocs() {
 
     const docs = data.Contents.map(function(doc) {
       const docKey = doc.Key;
-      const docUrl = bucketUrl + encodeURIComponent(docKey);
+      // const docUrl = bucketUrl + encodeURIComponent(docKey);
       return getHtml([
         "<span>",
         "<div>",
-        '<img style="width:128px;height:128px;" src="' + docUrl + '"/>',
+        "<p>",
+        doc.Key,
+        "</p>",
         "</div>",
         "<div>",
         "<span onclick=\"deleteDoc('" +
@@ -43,15 +45,15 @@ function listDocs() {
     });
     const message = docs.length
       ? "<p>Click on the X to delete the doc.</p>"
-      : "<p>You do not have any docs. Please add docs.</p>";
+      : "<p>ファイルが存在しません。ファイルをアップロードしてください。</p>";
     const htmlTemplate = [
       message,
       "<div>",
       getHtml(docs),
       "</div>",
-      '<input id="docupload" type="file" accept="image/*">',
+      '<input id="docupload" type="file" accept=".pdf">',
       '<button id="adddoc" onclick="addDoc()">',
-      "Add Doc",
+      "ファイルをアップロード",
       "</button>"
     ];
     document.getElementById("app").innerHTML = getHtml(htmlTemplate);
