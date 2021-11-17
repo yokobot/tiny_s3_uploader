@@ -1,104 +1,21 @@
-resource "aws_s3_bucket" "uploader" {
-  bucket = "${var.environment}-tiny-s3-uploader"
-  acl    = "public-read"
+module "uploader" {
+  source      = "./modules/s3"
+  environment = var.environment
+  s3_acl      = "public-read"
 
-  cors_rule {
-    allowed_headers = ["*"]
-    allowed_methods = [
-      "HEAD",
-      "GET",
-      "PUT",
-      "POST",
-      "DELETE"
-    ]
-    allowed_origins = ["*"]
-    expose_headers  = ["ETag"]
-  }
+  website_document = [
+    "index.html"
+  ]
 
-  website {
-    index_document = "index.html"
-    error_document = "error.html"
-  }
-
-  tags = {
-    Name = "${var.environment}-tiny-s3-uploader"
-  }
+  bucket_name    = var.environment
+  source_ip_list = var.source_ip_list
 }
 
-resource "aws_s3_bucket" "docs" {
-  bucket = "${var.environment}-tiny-s3-docs"
-  acl    = "private"
-
-  tags = {
-    Name = "${var.environment}-tiny-s3-docs"
-  }
+module "docs" {
+  source      = "./modules/s3"
+  environment      = var.environment
+  s3_acl           = "private"
+  website_document = []
+  bucket_name      = "${var.environment}-docs"
+  source_ip_list   = var.source_ip_list
 }
-
-resource "aws_s3_bucket_policy" "uploader" {
-  bucket = aws_s3_bucket.uploader.id
-
-  # Terraform's "jsonencode" function converts a
-  # Terraform expression's result to valid JSON syntax.
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Id      = "MYBUCKETPOLICY"
-    Statement = [
-      {
-        Sid       = "IPAllow"
-        Effect    = "Deny"
-        Principal = "*"
-        Action    = "s3:*"
-        Resource = [
-          aws_s3_bucket.uploader.arn,
-          "${aws_s3_bucket.uploader.arn}/*",
-        ]
-        Condition = {
-          NotIpAddress = {
-            "aws:SourceIp" = [for ip in var.source_ip_list : ip]
-          }
-        }
-      },
-    ]
-  })
-}
-
-resource "aws_s3_bucket_object" "html" {
-  bucket = aws_s3_bucket.uploader.id
-  key    = "index.html"
-  source = "assets/index.html"
-  etag = filemd5("path/to/file")
-}
-
-resource "aws_s3_bucket_object" "js" {
-  bucket = aws_s3_bucket.uploader.id
-  key    = "tinyS3Uploader.js"
-  source = "assets/tinyS3Uploader.js"
-  etag = filemd5("path/to/file")
-}
-
-# destroy時にenvファイルが残っていてもS3バケットを削除する処理
-#resource "null_resource" "uploader" {
-#  triggers = {
-#    bucket = aws_s3_bucket.uploader.bucket
-#  }
-#
-#  depends_on = [aws_s3_bucket.uploader]
-#
-#  provisioner "local-exec" {
-#    when    = destroy
-#    command = "aws s3 rm s3://${self.triggers.bucket} --recursive"
-#  }
-#}
-#
-#resource "null_resource" "docs" {
-#  triggers = {
-#    bucket = aws_s3_bucket.docs.bucket
-#  }
-#
-#  depends_on = [aws_s3_bucket.docs]
-#
-#  provisioner "local-exec" {
-#    when    = destroy
-#    command = "aws s3 rm s3://${self.triggers.bucket} --recursive"
-#  }
-#}

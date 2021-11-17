@@ -44,17 +44,22 @@ function listDocs() {
       ]);
     });
     const message = docs.length
-      ? "<p>Click on the X to delete the doc.</p>"
+      ? "<p>削除する場合はファイル名の下のXをクリックしてください。</p>"
       : "<p>ファイルが存在しません。ファイルをアップロードしてください。</p>";
     const htmlTemplate = [
       message,
       "<div>",
       getHtml(docs),
       "</div>",
+      "<div>",
+      '<label for="docupload">アップロードするファイルを選択してください</label>',
       '<input id="docupload" type="file" accept=".pdf">',
+      "</div>",
+      "<div>",
       '<button id="adddoc" onclick="addDoc()">',
       "ファイルをアップロード",
-      "</button>"
+      "</button>",
+      "</div>"
     ];
     document.getElementById("app").innerHTML = getHtml(htmlTemplate);
   });

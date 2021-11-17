@@ -8,7 +8,7 @@ resource "aws_cognito_identity_pool" "js" {
 }
 
 resource "aws_iam_role" "unauthenticated_user" {
-  name = "${var.environment}-unauthed-user-role"
+  name               = "${var.environment}-unauthed-user-role"
   assume_role_policy = <<POLICY
 {
   "Version": "2012-10-17",
@@ -58,8 +58,8 @@ resource "aws_iam_role_policy" "unauthenticated_user" {
           "s3:PutObjectAcl"
         ]
         Resource = [
-          aws_s3_bucket.docs.arn,
-          "${aws_s3_bucket.docs.arn}/*"
+          module.docs.arn,
+          "${module.docs.arn}/*"
         ]
       }
     ]
