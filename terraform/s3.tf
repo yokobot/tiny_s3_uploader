@@ -1,6 +1,5 @@
 module "uploader" {
   source      = "./modules/s3"
-  environment = var.environment
   s3_acl      = "public-read"
 
   website_document = [
@@ -13,7 +12,6 @@ module "uploader" {
 
 module "docs" {
   source      = "./modules/s3"
-  environment      = var.environment
   s3_acl           = "private"
   website_document = []
   bucket_name      = "${var.environment}-docs"

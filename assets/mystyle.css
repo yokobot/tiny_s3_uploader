@@ -1,0 +1,14 @@
+body, #wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    text-align: center;
+}
+
+div {
+    margin: 10px;
+}
+
+footer {
+    margin-top: auto;
+}

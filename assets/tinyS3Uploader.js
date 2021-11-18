@@ -1,6 +1,6 @@
 const docsBucketName = "dev-tiny-s3-uploader-docs";
 const bucketRegion = "ap-northeast-1";
-const IdentityPoolId = "ap-northeast-1:5e9821ce-f4bb-4d9a-a770-8a4bff4ca65e";
+const IdentityPoolId = "ap-northeast-1:043b8405-03f3-427f-acde-e6240f72b208";
 
 AWS.config.update({
   region: bucketRegion,
@@ -34,25 +34,32 @@ function listDocs() {
         "</p>",
         "</div>",
         "<div>",
-        "<span onclick=\"deleteDoc('" +
+        "<button id=\"deletedoc\" onclick=\"deleteDoc('" +
           docKey +
           "')\">",
-        "X",
-        "</span>",
+        "ファイルを削除",
+        "</button>",
         "</div>",
         "</span>"
       ]);
     });
     const message = docs.length
-      ? "<p>削除する場合はファイル名の下のXをクリックしてください。</p>"
+      ? "<p>削除する場合はファイル名の下の「ファイルを削除」ボタンをクリックしてください。</p>"
       : "<p>ファイルが存在しません。ファイルをアップロードしてください。</p>";
     const htmlTemplate = [
+      "<div>",
+      "<h2>",
+      `S3 Bucket: ${docsBucketName}`,
+      "</h2>",
+      "</div>",
       message,
       "<div>",
       getHtml(docs),
       "</div>",
       "<div>",
-      '<label for="docupload">アップロードするファイルを選択してください</label>',
+      '<label for="docupload">アップロードするファイルを選択してください。</label>',
+      "</div>",
+      "<div>",
       '<input id="docupload" type="file" accept=".pdf">',
       "</div>",
       "<div>",

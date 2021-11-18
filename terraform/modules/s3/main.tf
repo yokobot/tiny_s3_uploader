@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "bucket" {
-  bucket = var.environment
+  bucket = var.bucket_name
   acl    = var.s3_acl
 
   cors_rule {
