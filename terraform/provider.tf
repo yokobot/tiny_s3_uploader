@@ -1,10 +1,10 @@
 provider "aws" {
   region = "ap-northeast-1"
-  default_tags {
-    tags = {
-      env = var.environment
-    }
-  }
+  #default_tags {
+  #  tags = {
+  #    app_name = var.s3_bucket_prefix
+  #  }
+  #}
 }
 
 terraform {

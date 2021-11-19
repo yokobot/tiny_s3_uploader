@@ -1,14 +1,14 @@
 resource "aws_cognito_identity_pool" "js" {
-  identity_pool_name               = "${var.environment}-js"
+  identity_pool_name               = "${var.s3_bucket_prefix}-js"
   allow_unauthenticated_identities = true
 
   tags = {
-    Name = "${var.environment}-idp"
+    Name = "${var.s3_bucket_prefix}-idp"
   }
 }
 
 resource "aws_iam_role" "unauthenticated_user" {
-  name               = "${var.environment}-unauthed-user-role"
+  name               = "${var.s3_bucket_prefix}-unauthed-user-role"
   assume_role_policy = <<POLICY
 {
   "Version": "2012-10-17",
@@ -34,7 +34,7 @@ resource "aws_iam_role" "unauthenticated_user" {
 }
 
 resource "aws_iam_role_policy" "unauthenticated_user" {
-  name = "${var.environment}-unauthenticated-policy"
+  name = "${var.s3_bucket_prefix}-unauthenticated-policy"
   role = aws_iam_role.unauthenticated_user.id
 
   policy = jsonencode({
