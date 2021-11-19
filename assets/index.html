@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="content-type" charset="UTF-8">
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./mystyle.css">
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1028.0.min.js"></script>
+    <script src="./tinyS3Uploader.js"></script>
+    <script>
+        function getHtml(template) {
+            return template.join('\n');
+        }
+        listDocs();
+    </script>
+</head>
+
+<body>
+    <h1>Tiny S3 Uploader</h1>
+    <div id="app"></div>
+</body>
+
+</html>
