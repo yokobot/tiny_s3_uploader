@@ -1,6 +1,6 @@
-environment = "dev-tiny-s3-uploader"
+environment = "S3 BUCKET PREFIX"
 
 source_ip_list = [
-  "121.109.150.47/32",
-  "121.109.150.48/32"
+  "xxx.xxx.xxx.xxx/32",
+  "xxx.xxx.xxx.xxx/32"
 ]
