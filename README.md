@@ -6,28 +6,28 @@
 - 担当者が aws cli を使ってくれない
 - 担当者に Cyberduck も拒否られてしまった
 
-単一のバケットにただファイルをアップロードするだけのサーバレスアプリケーションです。
+単一の S3 バケットにただ pdf ファイルをアップロードするだけのサーバレスアプリケーションです。
 
 ## デプロイ方法
 
 1. terraform/tiny_s3_uploader.tfvars を編集する
     - s3_bucket_prefix : S3 バケット名
-    - source_ip_list: terraformを実行する(AWSコンソールを操作する)環境のIPとアップロードする環境のIPを設定する
+    - source_ip_list: terraform を実行する(AWS コンソールを操作する)環境の IP とアップロードする環境の IP を設定する
 1. terraform 実行
     - `cd terraform/`
     - `terraform apply -var-file tiny_s3_uploader.tfvars`
 1. assets/tinyS3Uploader.js を編集する
-    - docsBucketName : ファイルをアップロードする S3 バケット名 (terraform環境変数 s3_bucket_prefix + "docs")
+    - docsBucketName : ファイルをアップロードする S3 バケット名 (terraform 環境変数 s3_bucket_prefix + "docs")
     - bucketRegion : S3, cognito のあるリージョン
     - IdentityPoolId : terraform で構築した cognito id pool の id
-1. web ホスティング用の s3 バケットにコードをアップロードする
+1. web ホスティング用の S3 バケットにコードをアップロードする
     - `aws s3 cp ../assets s3://${terraform環境変数 s3_bucket_prefix} ----recursive`
 
 ## 使用方法
 
-1. ブラウザから S3 バケット名 (terraform環境変数 s3_bucket_prefix) のバケットウェブサイトエンドポイントにアクセスする
+1. ブラウザから S3 バケット名 (terraform 環境変数 s3_bucket_prefix) のバケットウェブサイトエンドポイントにアクセスする
 1. 画面に従いファイルをアップロードする
-    - ファイルは S3 バケット名 (terraform環境変数 s3_bucket_prefix + "docs") に保存される
+    - ファイルは S3 バケット名 (terraform 環境変数 s3_bucket_prefix + "docs") に保存される
 
 ## 注意事項
 
